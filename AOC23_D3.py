@@ -95,16 +95,26 @@ def find_adjacent_numbers(max_rows, max_cols, row, col, numbers, debug):
                 if debug:
                     print(f'Must Add in : {value}')
                 sum += value
+            elif start < col and col < finish:
+                if debug:
+                    print(f'Must Add in : {value}')
+                sum += value
 
         #
         # This is the case for the numbers in the Row below the symbol.
-        #      R+1 C-1, R+1C, R+1 C+1                                        
+        #      R+1 C-1, R+1C, R+1 C+1     
+        # PLUS there is a case where the number spans the column where the symbol
+        # is located.                                   
         if nrow - 1 == row:
             if finish + 1 == col or finish == col:
                 if debug:
                     print(f'Must Add in : {value}')
                 sum += value
             elif start == col or start - 1 == col:
+                if debug:
+                    print(f'Must Add in : {value}')
+                sum += value
+            elif start < col and col < finish:
                 if debug:
                     print(f'Must Add in : {value}')
                 sum += value
@@ -122,7 +132,8 @@ def find_part_num(max_rows, max_cols, nums, symbols, debug):
 def flatten_list(list_to_flatten):
     flat_list = []
     for row in list_to_flatten:
-        flat_list += row
+        for tup in row:
+            flat_list.append(tup)
     return flat_list 
 
 def main(arg_list: list[str] | None = None):
