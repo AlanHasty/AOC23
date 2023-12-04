@@ -61,7 +61,7 @@ def process_symbols(row, line, debug):
 
     return s_in_line
 
-def find_adjacent_numbers(max_rows, max_cols, row, col, numbers, debug):
+def find_adjacent_numbers(row, col, numbers, debug):
     if debug:
         print(f'Finding adjacent numbers to {row = }, {col =}')
 
@@ -120,14 +120,84 @@ def find_adjacent_numbers(max_rows, max_cols, row, col, numbers, debug):
                 sum += value
     return sum
 
+def find_gear_ratios(row, col, nums, debug):
+    ratio = []
+    for i,row_nums in enumerate(nums):
+        (nrow, start, finish, value) = row_nums
+        if False == True and row < 2: 
+            print(f'{value = } at {nrow = }: {start = }: {finish =}')
+        
+        #
+        # This is the case for the numbers in the same Row as the symbol.
+        #      RC-1, RC, RC+1
+        if nrow == row:
+            if finish + 1 == col:
+                if debug:
+                    print(f'Gear : {value}')
+                ratio.append(value)
+            elif start - 1 == col:
+                if debug:
+                    print(f'Gear : {value}')
+                ratio.append(value)
+        #
+        # This is the case for the numbers in the Row above the symbol.
+        #      R-1 C-1, R-1C, R-1 C+1                                        
+        if nrow + 1 == row:
+            if finish + 1 == col or finish == col:
+                if debug:
+                    print(f'Gear : {value}')
+                ratio.append(value)
+            elif start == col or start - 1 == col:
+                if debug:
+                    print(f'Gear : {value}')
+                ratio.append(value)
+            elif start < col and col < finish:
+                if debug:
+                    print(f'Gear : {value}')
+                ratio.append(value)
+
+        #
+        # This is the case for the numbers in the Row below the symbol.
+        #      R+1 C-1, R+1C, R+1 C+1     
+        # PLUS there is a case where the number spans the column where the symbol
+        # is located.                                   
+        if nrow - 1 == row:
+            if finish + 1 == col or finish == col:
+                if debug:
+                    print(f'Gear : {value}')
+                ratio.append(value)
+            elif start == col or start - 1 == col:
+                if debug:
+                    print(f'Gear : {value}')
+                ratio.append(value)
+            elif start < col and col < finish:
+                if debug:
+                    print(f'Gear : {value}')
+                ratio.append(value)
+    print(f'Gear Ratio parts: {ratio = }')
+    if len(ratio) == 2:
+        cal_ratio = ratio[0] * ratio[1]
+    elif len(ratio) == 1:
+        print('[bold blue]Note: Not a gear')
+        cal_ratio = 0
+    else:
+        print('[bold red]Warning - more than two gears found')
+        cal_ratio = 0 
+        
+    return cal_ratio
+
 def find_part_num(max_rows, max_cols, nums, symbols, debug):
-    part_number = 0
+    gear_r_sum = part_number = 0
     for i, symbol in enumerate(symbols): 
         (row, index, char) = symbol
         if debug:
             print(f'Finding adjacent numbers for symbol {char = }: {row}, {index}')
-        part_number += find_adjacent_numbers(max_rows, max_cols, row, index, nums, debug)
+        part_number += find_adjacent_numbers(row, index, nums, debug)
+        if char == '*':
+            gear_r_sum += find_gear_ratios(row, index, nums, debug)
+
     print(f'Part number sum = {part_number}')
+    print(f'Gear Ratio sum = {gear_r_sum}')
             
 def flatten_list(list_to_flatten):
     flat_list = []
