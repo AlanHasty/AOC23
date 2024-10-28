@@ -183,10 +183,10 @@ def find_gear_ratios(row, col, nums, debug):
     else:
         print('[bold red]Warning - more than two gears found')
         cal_ratio = 0 
-        
+
     return cal_ratio
 
-def find_part_num(max_rows, max_cols, nums, symbols, debug):
+def find_part_num(nums, symbols, debug):
     gear_r_sum = part_number = 0
     for i, symbol in enumerate(symbols): 
         (row, index, char) = symbol
@@ -217,9 +217,6 @@ def main(arg_list: list[str] | None = None):
         for i,line in enumerate(datafile):
             l = line.strip()
             print(f'{l = }')
-            if columns == 0:
-                columns = len(l)
-
 
             # first find the numbers in a line, along with the index that the number 
             # and finishes and row number
@@ -231,8 +228,6 @@ def main(arg_list: list[str] | None = None):
             symb_in_row = process_symbols(i, l, False)
             if len(symb_in_row) != 0:
                 symbol_list.append(symb_in_row)
-            
-            rows = i
 
     sym_list = flatten_list(symbol_list)
     nums_list = flatten_list(num_list)
@@ -241,7 +236,7 @@ def main(arg_list: list[str] | None = None):
         print(f'{num_list = }')
         print(f'{symbol_list = }')
         
-    find_part_num(rows, columns, nums_list, sym_list, True)
+    find_part_num(nums_list, sym_list, True)
 
 
   
