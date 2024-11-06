@@ -6,62 +6,69 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-
+#define SIZE_WORD_NUMS 10
 
 char * buffer = NULL;
 FILE *openme;
 
 typedef struct dig_info {
     char * name;
-    int digit_first_idx;
-    int name_first_idx;
-    int digit_last_idx;
-    int name_last_idx;
+    char digit;
 } dig_info_t ;
 
 void clear_nums_array(dig_info_t *n)
 {
-    memset((void *)n, 0, sizeof(dig_info_t)*10);
+    memset((void *)n, 0, sizeof(dig_info_t)*SIZE_WORD_NUMS);
 }
 
-void init_nums_array(dig_info_t *n)
+void init_nums_array(dig_info_t *i)
 {
-    clear_nums_array(n);
-    for (int loop = 0; loop < 10; loop++)
+    clear_nums_array(i);
+    dig_info_t *n ;
+    for (int loop = 0; loop < SIZE_WORD_NUMS; loop++)
     {
+        n = &i[loop];
         switch(loop)
         {
             case 0:
                 n->name = "zero";
+                n->digit = '0';
                 break;
             case 1: 
                 n->name = "one";
+                n->digit = '1';
                 break;
             case 2:
                 n->name = "two";
+                n->digit = '2';
                 break;
             case 3: 
                 n->name = "three";
+                n->digit = '3';
                 break;
             case 4:
                 n->name = "four";
+                n->digit = '4';
                 break;
             case 5:
                 n->name = "five";
+                n->digit = '5';
                 break;
             case 6:
                 n->name = "six";
+                n->digit = '6';
                 break;
             case 7:
                 n->name = "seven";
+                n->digit = '7';
                 break;
             case 8: 
                 n->name = "eight";
+                n->digit = '8';
                 break;
             case 9:
                 n->name = "nine";
-            default: 
-                n->name = "unknown";
+                n->digit = '9';
         }
     }
 }
@@ -71,7 +78,7 @@ int main(int argc, char ** argv)
 {
     bool part_b_flag = false;
     char * fname; 
-    dig_info_t nums[10]; 
+    dig_info_t nums[SIZE_WORD_NUMS]; 
 
     if ( argc >= 2 )
     {
@@ -126,6 +133,28 @@ int main(int argc, char ** argv)
                 last_digit = buffer[pos];
                 printf("Found last digit %c\n", last_digit);
             }
+            else 
+            {
+                /** Search for digits in line that are represented by words. */
+                for ( int loop = 0; loop < SIZE_WORD_NUMS; loop++)
+                {
+                    if ( strncmp(&buffer[pos], nums[loop].name, strlen(nums[loop].name)) == 0 )
+                    {
+                        if (first_dig_found == false)
+                        {
+                            first_digit = nums[loop].digit;
+                            first_dig_found = true;
+                            printf("Found first digit %c\n", first_digit);
+                        }
+                        last_digit = nums[loop].digit;
+                        printf("Found last digit %c\n", last_digit);
+                        break;
+                    }
+                }
+                
+            }
+
+
             if ( buffer[pos] == 0xa )
             {
                 first_dig_found = false;
@@ -136,7 +165,9 @@ int main(int argc, char ** argv)
                 printf("Line number = %s : total %d\n", line_sum, total);
                 break;
             }
+
         }
+
         if (first_dig_found) {
             char line_sum[0];
             line_sum[0] = first_digit;
@@ -146,4 +177,5 @@ int main(int argc, char ** argv)
         }
 
     }
+    fclose(openme);
 }
