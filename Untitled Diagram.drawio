@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36" version="26.0.11">
   <diagram name="Page-1" id="mvN3Fo1kbd8ghU0ybUim">
-    <mxGraphModel dx="606" dy="349" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1117" dy="643" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -22,8 +22,8 @@
         <mxCell id="xgDFuagY5n8pahaOMB0h-6" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="240" y="160" width="310" height="10" as="geometry" />
         </mxCell>
-        <mxCell id="xgDFuagY5n8pahaOMB0h-7" value="typedef struct s {&lt;div&gt;&amp;nbsp; &amp;nbsp; int src_start;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int dst_start;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int range;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; struct s * next;&lt;br&gt;&lt;div&gt;} Map_Node_t;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Map_Node_t seed_to_soil = Null;&lt;/div&gt;&lt;div&gt;Map_Node_t soil_to_fert = Null;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="80" y="230" width="230" height="150" as="geometry" />
+        <mxCell id="xgDFuagY5n8pahaOMB0h-7" value="typedef struct s {&lt;div&gt;&amp;nbsp; &amp;nbsp; int src_start;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int dst_start;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int range;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; struct s * next;&lt;br&gt;&lt;div&gt;} Map_Node_t;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Map_Node_t *seed_to_soil = Null;&lt;/div&gt;&lt;div&gt;Map_Node_t *soil_to_fert = Null;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="80" y="230" width="200" height="150" as="geometry" />
         </mxCell>
         <mxCell id="xgDFuagY5n8pahaOMB0h-13" value="" style="group" vertex="1" connectable="0" parent="1">
           <mxGeometry x="300" y="240" width="120" height="120" as="geometry" />
