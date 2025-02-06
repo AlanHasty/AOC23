@@ -22,8 +22,62 @@
         <mxCell id="xgDFuagY5n8pahaOMB0h-6" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="240" y="160" width="310" height="10" as="geometry" />
         </mxCell>
-        <mxCell id="xgDFuagY5n8pahaOMB0h-7" value="typedef struct s {&lt;div&gt;&amp;nbsp; &amp;nbsp; int src_start;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int dst_start;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int range;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; struct s * next;&lt;br&gt;&lt;div&gt;} Range_Node_t;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="160" y="240" width="230" height="220" as="geometry" />
+        <mxCell id="xgDFuagY5n8pahaOMB0h-7" value="typedef struct s {&lt;div&gt;&amp;nbsp; &amp;nbsp; int src_start;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int dst_start;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int range;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; struct s * next;&lt;br&gt;&lt;div&gt;} Map_Node_t;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Map_Node_t seed_to_soil = Null;&lt;/div&gt;&lt;div&gt;Map_Node_t soil_to_fert = Null;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="80" y="230" width="230" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="xgDFuagY5n8pahaOMB0h-13" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="300" y="240" width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="xgDFuagY5n8pahaOMB0h-8" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="xgDFuagY5n8pahaOMB0h-13">
+          <mxGeometry width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="xgDFuagY5n8pahaOMB0h-9" value="src_start" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="xgDFuagY5n8pahaOMB0h-13">
+          <mxGeometry width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="xgDFuagY5n8pahaOMB0h-10" value="dsr_start" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="xgDFuagY5n8pahaOMB0h-13">
+          <mxGeometry y="20" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="xgDFuagY5n8pahaOMB0h-11" value="range" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="xgDFuagY5n8pahaOMB0h-13">
+          <mxGeometry y="40" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="xgDFuagY5n8pahaOMB0h-12" value="next" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="xgDFuagY5n8pahaOMB0h-13">
+          <mxGeometry y="60" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="xgDFuagY5n8pahaOMB0h-14" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="450" y="320" width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="xgDFuagY5n8pahaOMB0h-15" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="xgDFuagY5n8pahaOMB0h-14">
+          <mxGeometry width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="xgDFuagY5n8pahaOMB0h-16" value="src_start" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="xgDFuagY5n8pahaOMB0h-14">
+          <mxGeometry width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="xgDFuagY5n8pahaOMB0h-17" value="dsr_start" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="xgDFuagY5n8pahaOMB0h-14">
+          <mxGeometry y="20" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="xgDFuagY5n8pahaOMB0h-18" value="range" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="xgDFuagY5n8pahaOMB0h-14">
+          <mxGeometry y="40" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="xgDFuagY5n8pahaOMB0h-19" value="next" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="xgDFuagY5n8pahaOMB0h-14">
+          <mxGeometry y="60" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="xgDFuagY5n8pahaOMB0h-20" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="600" y="400" width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="xgDFuagY5n8pahaOMB0h-21" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="xgDFuagY5n8pahaOMB0h-20">
+          <mxGeometry width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="xgDFuagY5n8pahaOMB0h-22" value="src_start" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="xgDFuagY5n8pahaOMB0h-20">
+          <mxGeometry width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="xgDFuagY5n8pahaOMB0h-23" value="dsr_start" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="xgDFuagY5n8pahaOMB0h-20">
+          <mxGeometry y="20" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="xgDFuagY5n8pahaOMB0h-24" value="range" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="xgDFuagY5n8pahaOMB0h-20">
+          <mxGeometry y="40" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="xgDFuagY5n8pahaOMB0h-25" value="next" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="xgDFuagY5n8pahaOMB0h-20">
+          <mxGeometry y="60" width="120" height="20" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
