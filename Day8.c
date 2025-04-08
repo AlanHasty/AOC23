@@ -13,6 +13,8 @@ FILE *openme;
 
 typedef struct node_info {
     char name [5];
+    char lchild_name[5];
+    char rchild_name[5];
     struct node_info * left;
     struct node_info * right;
     struct node_info * next;
@@ -39,15 +41,15 @@ node_info_t * find_node_in_maze(node_info_t *maze, char * name)
     return NULL;
 }
 
-void add_node_to_maze(node_info_t *maze, node_info_t *n)
+void add_node_to_maze(node_info_t **maze, node_info_t *n)
 {
-    if ( maze == NULL )
+    if ( *maze == NULL )
     {
-        maze = n;
+        *maze = n;
     }
     else
     {
-        node_info_t * m = maze;
+        node_info_t * m = *maze;
         while (m->next != NULL)
         {
             m = m->next;
@@ -56,10 +58,103 @@ void add_node_to_maze(node_info_t *maze, node_info_t *n)
     }
 }
 
+node_info_t * create_new_node(char * name, char * left_child_name, char * right_child_name)
+{
+    node_info_t * n = malloc(sizeof(node_info_t));
+    memcpy(n->name, name, strlen(name));
+    memcpy(n->lchild_name, left_child_name, strlen(left_child_name));
+    memcpy(n->rchild_name, right_child_name, strlen(right_child_name));
+    n->left = NULL;
+    n->right = NULL;
+    n->next = NULL;
+    return n;
+}
+
+bool isEndNode(node_info_t * n)
+{
+    if (n == NULL)
+    {
+        return false;
+    }
+    if (strncmp(n->name, "ZZZ", 3) == 0)
+    {
+        return true;
+    }
+    return false;
+}   
+
+int follow_instructions(node_info_t *maze, char *instr)
+{
+    int num_turns = 0;
+
+    char * p = instr;
+
+    if (maze == NULL)
+    {
+        return 0;
+    }
+    node_info_t * n = maze;
+    while (1)
+    {
+        printf("Current node %s, left child %s, right child %s\n", n->name, n->lchild_name, n->rchild_name);
+        if (isEndNode(n))
+        {
+            break;
+        }
+        char dir = *p;
+        if (dir == 'L')
+        {
+            n = n->left;
+            num_turns++;
+        }
+        else if (dir == 'R')
+        {
+            n = n->right;
+            num_turns++;
+        }
+        else 
+        {
+            // reset the instruction pointer
+            p = instr;
+        }
+        p++;
+    }
+
+    return num_turns;
+}
+
+void connect_nodes_by_name(node_info_t *maze)
+{
+    node_info_t * n = maze;
+    while (n != NULL)
+    {
+        if (n->lchild_name[0] != '\0')
+        {
+            n->left = find_node_in_maze(maze, n->lchild_name);
+        }
+        if (n->rchild_name[0] != '\0')
+        {
+            n->right = find_node_in_maze(maze, n->rchild_name);
+        }
+        n = n->next;
+    }
+}
+
+void print_node_list(node_info_t *maze)
+{
+    node_info_t * n = maze;
+    while (n != NULL)
+    {
+        printf("Node %s, left child %s, right child %s\n", n->name, n->lchild_name, n->rchild_name);
+        n = n->next;
+    }
+}
+
 int main(int argc, char ** argv)
 {
     bool part_b_flag = false;
     char * fname; 
+    int node_count = 0;
 
     node_info_t * maze_start = NULL;
 
@@ -83,6 +178,8 @@ int main(int argc, char ** argv)
     openme = fopen(fname, "r");
 
     bool instructions_found = false;
+    char * instr = NULL;
+
     while(1)
     {
         if ((fgets((char *)buffer, 1024, openme)) == NULL)
@@ -93,8 +190,9 @@ int main(int argc, char ** argv)
         if ( !instructions_found)
         {
             int instruct_length = strlen(buffer);
-            char * instr = malloc(instruct_length+1);
-            memcpy(instr, buffer, instruct_length);
+            instr = malloc(instruct_length+1);
+            memset(instr, 0, instruct_length+1);
+            memcpy(instr, buffer, instruct_length-1); // remove trailing \n
             instructions_found = true;
         }
         else
@@ -123,102 +221,19 @@ int main(int argc, char ** argv)
                 printf("Error parsing node %s\n", buffer);
                 continue;
             }
-            node_info_t * next_node = find_node_in_maze(maze_start, node_name);
-
-            if ( next_node == NULL )
-            {
-                node_info_t * n = malloc(sizeof(node_info_t));
-                // Create the node and add it to the maze
-                memcpy(n->name, node_name, strlen(node_name));
-                n->left = NULL;
-                n->right = NULL;
-                n->next = NULL;
-                if ( maze_start == NULL )
-                {
-                    maze_start = n;
-                }
-
-                // Now we need to check if the left and right children exist
-
-                // Now check if either of the children exist
-                n->left = find_node_in_maze(maze_start, left_child_name);
-                if ( n->left == NULL )
-                {
-                    // Create the left child node
-                    n->left = malloc(sizeof(node_info_t));
-                    memcpy(n->left->name, left_child_name, strlen(left_child_name));
-                    n->next = n->left;
-                    n->left->left = NULL;
-                    n->left->right = NULL;
-                    n->left->next = NULL;
-                }
-
-                n->right = find_node_in_maze(maze_start, right_child_name);
-                if ( n->right == NULL )
-                {
-                    // Create the right child node
-                    n->right = malloc(sizeof(node_info_t));
-                    memcpy(n->right->name, right_child_name, strlen(right_child_name));
-                    n->left->next = n->right;
-                    n->right->left = NULL;
-                    n->right->right = NULL;
-                    n->right->next = NULL;
-                }
-            }
-            else
-            {
-                printf("Node %s already exists\n", node_name);
-                // We need to check if the left and right children exist
-                // If they do, then set the pointers to them
-                // If they don't, then create them
-               
-                if ( next_node->left == NULL )
-                {
-
-                    // Create the left child node
-                    node_info_t * n = malloc(sizeof(node_info_t));
-                    memcpy(n->name, left_child_name, strlen(left_child_name));
-
-                    n->left = NULL;
-                    n->right = NULL;
-                    n->next = NULL;
-                    next_node->left = n;   
-                    
-                    if ( next_node->next == NULL )
-                    {
-                        next_node->next = n;
-                    }
-                    else
-                    {
-                        node_info_t * m = next_node->next;
-                        next_node->next = n;
-                        n->next = m;
-                    }
-                }
-                if ( next_node->right == NULL )
-                {
-                    // Create the right child node
-                    node_info_t * n = malloc(sizeof(node_info_t));
-                    memcpy(n->name, right_child_name, strlen(right_child_name));
-                    n->left = NULL;
-                    n->right = NULL;
-                    n->next = NULL;
-                    next_node->right = n;
-                    if ( next_node->next == NULL )
-                    {
-                        next_node->next = n;
-                    }
-                    else
-                    {
-                        node_info_t * m = next_node->next;
-                        next_node->next = n;
-                        n->next = m;
-                    }
-                }
-            }
+            node_info_t * next_node = create_new_node(node_name, left_child_name, right_child_name);
+            add_node_to_maze(&maze_start, next_node);
+            node_count++;
         }
-
     }
+    printf("Maze has %d nodes\n", node_count);
+    print_node_list(maze_start);
+
+    connect_nodes_by_name(maze_start);
+    
+    int number_of_turns = follow_instructions(maze_start, instr);
+    printf("Number of turns = %d\n", number_of_turns);
+
     
     fclose(openme);
 }
