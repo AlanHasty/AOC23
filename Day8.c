@@ -12,7 +12,7 @@ char * buffer = NULL;
 FILE *openme;
 
 typedef struct node_info {
-    char * name;
+    char name [5];
     struct node_info * left;
     struct node_info * right;
     struct node_info * next;
@@ -101,7 +101,7 @@ int main(int argc, char ** argv)
         {
             // Now build the maze 
             int node_len = strlen(buffer);
-            if ( node_len == 0 )
+            if ( node_len == 1 )
             {
                 continue;
             }
@@ -115,7 +115,9 @@ int main(int argc, char ** argv)
             char right_child_name [10];
             char node_name [10];
 
-            int num_names = scanf(buffer, "%s = (%[^,], %[^)])", node_name, left_child_name, right_child_name);
+            printf("%s", buffer);
+
+            int num_names = sscanf(buffer, "%s = (%[^,], %[^)])", node_name, left_child_name, right_child_name);
             if ( num_names != 3 )
             {
                 printf("Error parsing node %s\n", buffer);
@@ -131,6 +133,12 @@ int main(int argc, char ** argv)
                 n->left = NULL;
                 n->right = NULL;
                 n->next = NULL;
+                if ( maze_start == NULL )
+                {
+                    maze_start = n;
+                }
+
+                // Now we need to check if the left and right children exist
 
                 // Now check if either of the children exist
                 n->left = find_node_in_maze(maze_start, left_child_name);
@@ -139,6 +147,7 @@ int main(int argc, char ** argv)
                     // Create the left child node
                     n->left = malloc(sizeof(node_info_t));
                     memcpy(n->left->name, left_child_name, strlen(left_child_name));
+                    n->next = n->left;
                     n->left->left = NULL;
                     n->left->right = NULL;
                     n->left->next = NULL;
@@ -150,6 +159,7 @@ int main(int argc, char ** argv)
                     // Create the right child node
                     n->right = malloc(sizeof(node_info_t));
                     memcpy(n->right->name, right_child_name, strlen(right_child_name));
+                    n->left->next = n->right;
                     n->right->left = NULL;
                     n->right->right = NULL;
                     n->right->next = NULL;
@@ -167,25 +177,47 @@ int main(int argc, char ** argv)
 
                     // Create the left child node
                     node_info_t * n = malloc(sizeof(node_info_t));
-                    memcpy(n->left->name, left_child_name, strlen(left_child_name));
+                    memcpy(n->name, left_child_name, strlen(left_child_name));
+
                     n->left = NULL;
                     n->right = NULL;
                     n->next = NULL;
-                    next_node->left = n;    
+                    next_node->left = n;   
+                    
+                    if ( next_node->next == NULL )
+                    {
+                        next_node->next = n;
+                    }
+                    else
+                    {
+                        node_info_t * m = next_node->next;
+                        next_node->next = n;
+                        n->next = m;
+                    }
                 }
                 if ( next_node->right == NULL )
                 {
                     // Create the right child node
                     node_info_t * n = malloc(sizeof(node_info_t));
-                    memcpy(n->right->name, right_child_name, strlen(right_child_name));
+                    memcpy(n->name, right_child_name, strlen(right_child_name));
                     n->left = NULL;
                     n->right = NULL;
                     n->next = NULL;
                     next_node->right = n;
+                    if ( next_node->next == NULL )
+                    {
+                        next_node->next = n;
+                    }
+                    else
+                    {
+                        node_info_t * m = next_node->next;
+                        next_node->next = n;
+                        n->next = m;
+                    }
                 }
             }
         }
-        printf("%s\n", buffer);
+
     }
     
     fclose(openme);
