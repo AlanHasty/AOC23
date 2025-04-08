@@ -1,6 +1,6 @@
 import re
 import argparse
-from rich import print
+#from rich import print
 from dataclasses import dataclass
 from typing import List
 
@@ -37,9 +37,13 @@ def flatten_list(list_to_flatten):
 
 @dataclass
 class Range_map_entry():
+    dst_cat: int    
     src_cat: int
-    dst_cat: int
     range: int
+    def __init__(self, src_cat: int, dst_cat: int, range: int):
+        self.src_cat = src_cat
+        self.dst_cat = dst_cat
+        self.range = range    
 
 @dataclass
 class Seed_t_Soil_map():
@@ -100,7 +104,7 @@ def read_seed_to_soil_map(file_data):
                 break
             else:
                 l = line.strip()
-                (src, dst, rng) = l.split()
+                (dst, src, rng) = l.split()
                 r = Range_map_entry(int(src), int(dst), int(rng))
                 #print(f'{r = }')
                 ss.seed_t_soil.append(r)
@@ -114,17 +118,17 @@ def read_soil_to_fert_map(file_data):
     capture = False
     ss = Soil_t_Fertilizer_map([])
     for line in file_data:
-        if "soil-to-fertilizer" in line and capture == False:
+        if "soil-to-fertilizer" in line and capture is False:
             capture = True
             continue
-        elif capture == True:
+        elif capture is True:
             if len(line) == 1:
                 capture = False
                 break
             else:
                 l = line.strip()
-                (src, dst, rng) = l.split()
-                r = Range_map_entry(int(src), int(dst), int(rng))
+                (dst, src, rng) = l.split()
+                r = Range_map_entry(src_cat=int(src), dst_cat=int(dst), range=int(rng))
                 #print(f'{r = }')
                 ss.soil_t_fert.append(r)
         else:
@@ -137,16 +141,16 @@ def read_fert_to_water_map(file_data):
     capture = False
     m = Fertilizer_t_Water_map([])
     for line in file_data:
-        if "fertilizer-to-water" in line and capture == False:
+        if "fertilizer-to-water" in line and capture is False:
             capture = True
             continue
-        elif capture == True:
+        elif capture is True:
             if len(line) == 1:
                 capture = False
                 break
             else:
                 l = line.strip()
-                (src, dst, rng) = l.split()
+                (dst, src, rng) = l.split()
                 r = Range_map_entry(int(src), int(dst), int(rng))
                 #print(f'{r = }')
                 m.fert_t_water.append(r)
@@ -160,16 +164,16 @@ def read_water_to_light_map(file_data):
     capture = False
     m = Water_t_Light_map([])
     for line in file_data:
-        if "water-to-light" in line and capture == False:
+        if "water-to-light" in line and capture is False:
             capture = True
             continue
-        elif capture == True:
+        elif capture is True:
             if len(line) == 1:
                 capture = False
                 break
             else:
                 l = line.strip()
-                (src, dst, rng) = l.split()
+                (dst, src, rng) = l.split()
                 r = Range_map_entry(int(src), int(dst), int(rng))
                 #print(f'{r = }')
                 m.water_t_light.append(r)
@@ -183,16 +187,16 @@ def read_light_to_temp_map(file_data):
     capture = False
     m = Ligth_t_Temp_map([])
     for line in file_data:
-        if "light-to-temperature" in line and capture == False:
+        if "light-to-temperature" in line and capture is False:
             capture = True
             continue
-        elif capture == True:
+        elif capture is True:
             if len(line) == 1:
                 capture = False
                 break
             else:
                 l = line.strip()
-                (src, dst, rng) = l.split()
+                (dst, src, rng) = l.split()
                 r = Range_map_entry(int(src), int(dst), int(rng))
                 #print(f'{r = }')
                 m.light_t_temp.append(r)
@@ -215,7 +219,7 @@ def read_temp_to_humidity_map(file_data):
                 break
             else:
                 l = line.strip()
-                (src, dst, rng) = l.split()
+                (dst, src, rng) = l.split()
                 r = Range_map_entry(int(src), int(dst), int(rng))
                 #print(f'{r = }')
                 m.temp_t_hum.append(r)
@@ -238,7 +242,7 @@ def read_humidity_to_location(file_data):
                 break
             else:
                 l = line.strip()
-                (src, dst, rng) = l.split()
+                (dst, src, rng) = l.split()
                 r = Range_map_entry(int(src), int(dst), int(rng))
                 #print(f'{r = }')
                 m.hum_t_loc.append(r)
@@ -251,12 +255,13 @@ def read_humidity_to_location(file_data):
 def search_range(value: int, r: Range_map_entry):
     r_low = r.src_cat
     r_high = r.src_cat + r.range
-    offset = r.src_cat - r.dst_cat
+
     found = False
 
     if value >= r_low and \
        value <= r_high:
-        new_value = value + offset
+        offset = value - r.src_cat
+        new_value = r.dst_cat + offset
         found = True
     else:
         new_value = None
@@ -265,7 +270,8 @@ def search_range(value: int, r: Range_map_entry):
 
 def find_seed_soil_trans(seed: int, ssm: Seed_t_Soil_map):
     for r in ssm.seed_t_soil:
-        (result, new_val) =search_range(seed, r)
+        print(f'{seed = }:: {r = }')
+        (result, new_val) = search_range(seed, r)
         if result == True:
             break
 
@@ -276,7 +282,8 @@ def find_seed_soil_trans(seed: int, ssm: Seed_t_Soil_map):
 
 def find_soil_fert_trans(soil: int, sfm: Soil_t_Fertilizer_map):
     for r in sfm.soil_t_fert:
-        (result, new_val) =search_range(soil, r)
+        print(f'{soil = }:: {r = }')
+        (result, new_val) = search_range(soil, r)
         if result == True:
             break
 
@@ -287,6 +294,7 @@ def find_soil_fert_trans(soil: int, sfm: Soil_t_Fertilizer_map):
 
 def find_fert_water_trans(fert: int, fwm: Fertilizer_t_Water_map):
     for r in fwm.fert_t_water:
+        print(f'{fert = }:: {r = }')
         (result, new_val) =search_range(fert, r)
         if result == True:
             break
@@ -298,6 +306,7 @@ def find_fert_water_trans(fert: int, fwm: Fertilizer_t_Water_map):
 
 def find_water_light_trans(water: int, wlm: Water_t_Light_map):
     for r in wlm.water_t_light:
+        print(f'{water = }:: {r = }')
         (result, new_val) =search_range(water, r)
         if result == True:
             break
@@ -309,6 +318,7 @@ def find_water_light_trans(water: int, wlm: Water_t_Light_map):
 
 def find_light_temp_trans(light: int, ltm:Ligth_t_Temp_map):
     for r in ltm.light_t_temp:
+        print(f'{light = }:: {r = }')
         (result, new_val) =search_range(light, r)
         if result == True:
             break
@@ -320,7 +330,8 @@ def find_light_temp_trans(light: int, ltm:Ligth_t_Temp_map):
 
 def find_temp_hum_trans(temp: int, thm:Temp_t_Humidity_map):
     for r in thm.temp_t_hum:
-        (result, new_val) =search_range(temp, r)
+        print(f'{temp = }:: {r = }')
+        (result, new_val) = search_range(temp, r)
         if result == True:
             break
 
@@ -331,7 +342,8 @@ def find_temp_hum_trans(temp: int, thm:Temp_t_Humidity_map):
 
 def find_hum_loc_trans(hum: int, hlm:Humidity_t_Loc_map):
     for r in hlm.hum_t_loc:
-        (result, new_val) =search_range(hum, r)
+        print(f'{hum = }:: {r = }')
+        (result, new_val) = search_range(hum, r)
         if result == True:
             break
 
@@ -373,9 +385,10 @@ def main(arg_list: list[str] | None = None):
               f'{temp_num = }',
               f'{hum_num = }',
               f'{loc_num = }\n',
-              sep='\n')
+              sep='\n\t-> ')
         
         locs.append(loc_num)
+        print(f'{min(locs)} :: {locs = }')
         
 if __name__ == '__main__':
     main()
